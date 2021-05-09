@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="指针,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="存储字符串数据的两种方式1、 使用字符数组的方式来存储  使用字符数组来存储 将字符串数据的每一个字符，存储到字符数组中，并追加个 \0 代表 结束 char name[5] = {‘r’,’o’,’s’,’e’,’\0’}; char name[] = {‘r’,’o’,’s’,’e’,’\0’}; char name[] = {“rose”};只有直接给字符串数组初始化一个字符串的时候，才会自">
+<meta name="keywords" content="指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="指针">
+<meta property="og:url" content="http://fanzheng.ink/2018/04/12/c/指针2/index.html">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="存储字符串数据的两种方式1、 使用字符数组的方式来存储  使用字符数组来存储 将字符串数据的每一个字符，存储到字符数组中，并追加个 \0 代表 结束 char name[5] = {‘r’,’o’,’s’,’e’,’\0’}; char name[] = {‘r’,’o’,’s’,’e’,’\0’}; char name[] = {“rose”};只有直接给字符串数组初始化一个字符串的时候，才会自">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-09T11:24:10.733Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="指针">
+<meta name="twitter:description" content="存储字符串数据的两种方式1、 使用字符数组的方式来存储  使用字符数组来存储 将字符串数据的每一个字符，存储到字符数组中，并追加个 \0 代表 结束 char name[5] = {‘r’,’o’,’s’,’e’,’\0’}; char name[] = {‘r’,’o’,’s’,’e’,’\0’}; char name[] = {“rose”};只有直接给字符串数组初始化一个字符串的时候，才会自">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fanzheng.ink/2018/04/12/c/指针2/">
+
+
+
+
+
+  <title>指针 | 水滴石穿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水滴石穿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fanzheng.ink/2018/04/12/c/指针2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fangzheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/psb.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水滴石穿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">指针</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T12:11:33+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c语言学习/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="存储字符串数据的两种方式"><a href="#存储字符串数据的两种方式" class="headerlink" title="存储字符串数据的两种方式"></a>存储字符串数据的两种方式</h2><p>1、 使用字符数组的方式来存储</p>
+<ul>
+<li>使用字符数组来存储<ul>
+<li>将字符串数据的每一个字符，存储到字符数组中，并追加个 <code>\0</code> 代表 结束</li>
+<li>char name[5] = {‘r’,’o’,’s’,’e’,’\0’};</li>
+<li>char name[] = {‘r’,’o’,’s’,’e’,’\0’};</li>
+<li>char name[] = {“rose”};只有直接给字符串数组初始化一个字符串的时候，才会自动追加一个 <code>\0</code>,前提是字符串数组的长度足够的情况下</li>
+<li>char name[] = “rose”;</li>
+</ul>
+</li>
+</ul>
+<p>2、 使用字符指针来存储字符串数据</p>
+<ul>
+<li><p>直接将一个字符串数据 初始化的时候给一个字符串指针</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char* name=&quot;jack&quot;;</span><br><span class="line">printf(&quot;%s\n&quot;,name);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="内存中的五大区域"><a href="#内存中的五大区域" class="headerlink" title="内存中的五大区域"></a>内存中的五大区域</h2><p>1、 内存中分为5块区域</p>
+<ul>
+<li><p>栈区域</p>
+<ul>
+<li>所有的局部变量都是声明在栈区域的</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>堆区域<ul>
+<li>允许程序员手动的从堆申请空间来使用</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>BSS段<ul>
+<li>用来存储未初始化的全局变量和静态变量</li>
+<li>声明一个全局变量，如果没有初始化，在程序运行的最开始，这个变量是没有初始化的。存储在bbs段</li>
+</ul>
+</li>
+<li>数据段/常量区<ul>
+<li>用来存储以及初始化的全局变量、静态变量，还有常量数据。</li>
+</ul>
+</li>
+<li>代码段<ul>
+<li>用来存储程序的代码/指令</li>
+</ul>
+</li>
+</ul>
+<p>2、 区域的作用</p>
+<ul>
+<li>不同的数据存储在不同的区域，方便系统的管理</li>
+</ul>
+<h2 id="存储字符串的两种方式的区别"><a href="#存储字符串的两种方式的区别" class="headerlink" title="存储字符串的两种方式的区别"></a>存储字符串的两种方式的区别</h2><p>1、 当他们都是局部变量的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char name[] = &quot;jack&quot;;</span><br><span class="line">char *name2 = &quot;rose&quot;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>name1 字符数组，是申请在栈区。字符串的每一个字符存储在这个字符数组中的每一个元素中</li>
+<li>name2 是一个局部的指针变量，name2这个指针变量是声明在栈区的。这个时候，字符串数据是存储在常量区中的。字符串数据就是以字符数组的形式存储在常量区</li>
+</ul>
+<p>2、 当他们作为全部变量的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char name[] = &quot;jack&quot;;</span><br><span class="line">char *name2 = &quot;rose&quot;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>name1 字符数组是存储在常量区的，字符的每一个字符是存储在这个数组的每一个元素中</li>
+<li>name2 也是存储在常量区的，字符串也是以字符数组的形式存储在常量区</li>
+<li>name2 指针存储的是“rose”这个字符串在常量区的地址</li>
+</ul>
+<p>3、 这两种方式的区别，在内存中的存储结构是不同的</p>
+<ul>
+<li>以字符数组存储，无论如何都是1个字符数组，然后字符串的每一个字符存储在数组的元素之中</li>
+<li>以字符指针存储，无论如何首先有一个字符指针变量。字符串数据都是以字符数组的形式存储在常量区的</li>
+<li>以字符数组存储的字符串数据，可以修改字符数组的元素。不管是全局的还是局部的，都可以使用下标区修改字符数组中的每一个元素</li>
+<li>以字符指针的形式存储字符串数据，这个时候字符指针指向的字符串数据是无法修改的。不管是全局的还是局部的，都不能使用字符指针1去修改字符串数据</li>
+</ul>
+<h2 id="字符串的恒定性（大前提是：以字符指针的形式存储的字符串）"><a href="#字符串的恒定性（大前提是：以字符指针的形式存储的字符串）" class="headerlink" title="字符串的恒定性（大前提是：以字符指针的形式存储的字符串）"></a>字符串的恒定性（大前提是：以字符指针的形式存储的字符串）</h2><p>1、 当以字符指针的形式存储字符串的时候，无论如何，字符串数据都是存储在常量区的。并且一旦存储在常量区中去了，这个字符串数据就无法更改。</p>
+<p>2、 当要在以字符指针的形式，将字符串数据存储到常量区的时候，并不是直接将字符串存储到常量区，而是先检查常量区中是否有相同内容的字符串</p>
+<p>3、 当重新为字符指针初始化一个字符串的时候，并不是修改原来的字符串，而是重新创建了一个字符串，把这个新的地址赋值给了它。</p>
+<p>4、 容易混的地方</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 这样是可以的，不是把“jack“ 改成了 ”rose“ ，而是重新创建了一个”rose“</span><br><span class="line">char* name = “jack”；</span><br><span class="line">name = &quot;rose&quot;;</span><br><span class="line">// 下面这样是不可以的，不能给数组名赋值</span><br><span class="line">char name[] = &quot;jack&quot;;</span><br><span class="line">// 会报错的，不能给数组名赋值</span><br><span class="line">name = &quot;rose&quot;</span><br><span class="line">// 可以使用下面的这种方式，来修改数组的元素</span><br><span class="line">name[0] = &quot;r&quot;;</span><br><span class="line">name[1] = &quot;o&quot;;</span><br><span class="line">name[2] = &quot;s&quot;;</span><br><span class="line">name[3] = &quot;e&quot;;</span><br><span class="line">name[4] = &quot;\0&quot;;</span><br></pre></td></tr></table></figure>
+<p>5、 建议使用字符指针来存储字符串数据。因为 用字符数组来存储字符串：长度固定，一旦创建以后，就最多只能存储这么多长度的数据了</p>
+<p>案例：存储五个学生的姓名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 第一种方式 使用二维数组,缺点是是每个字符串最大长度为9，不能超过最大长度</span><br><span class="line">char names[][10]=&#123;&quot;jack&quot;,&quot;rose&quot;,&quot;meime&quot;,&quot;lisan&quot;,&quot;zhangshan&quot;&#125;;</span><br><span class="line">for(int i=0;i&lt;5;i++)&#123;</span><br><span class="line">    printf(&quot;%s\n&quot;,names[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 第二种方式，使用字符指针数组来存储多个字符串数据,每个字符串的长度没有限制</span><br><span class="line">char* names2[5]=&#123;&quot;jack2&quot;,&quot;rose2&quot;,&quot;meime2&quot;,&quot;lisan2&quot;,&quot;zhangshan12345678991&quot;&#125;;</span><br><span class="line">for(int i=0;i&lt;5;i++)&#123;</span><br><span class="line">    printf(&quot;%s\n&quot;,names2[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/指针/" rel="tag"># 指针</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/12/c/内存和变量/" rel="next" title="内存与变量">
+                <i class="fa fa-chevron-left"></i> 内存与变量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/12/c/枚举/" rel="prev" title="枚举">
+                枚举 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/psb.jpg" alt="fangzheng">
+            
+              <p class="site-author-name" itemprop="name">fangzheng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#存储字符串数据的两种方式"><span class="nav-number">1.</span> <span class="nav-text">存储字符串数据的两种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存中的五大区域"><span class="nav-number">2.</span> <span class="nav-text">内存中的五大区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储字符串的两种方式的区别"><span class="nav-number">3.</span> <span class="nav-text">存储字符串的两种方式的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串的恒定性（大前提是：以字符指针的形式存储的字符串）"><span class="nav-number">4.</span> <span class="nav-text">字符串的恒定性（大前提是：以字符指针的形式存储的字符串）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fangzheng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+<script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500675900");
+
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+</script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

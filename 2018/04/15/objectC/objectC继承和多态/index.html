@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="objectC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="继承1、 语法@interface 类名 : 父亲类的名称 @end2、 oc继承特点  单根性，一个类只能有一个父类，不能有多个父类 传递性，A类从B类继承，B类从C类继承，那么A类就同时拥有BC类的成员  NSObject 类1、 是Foundation框架中的类，在这个类中有一个类方法new 这个方法是用来创建对象的，方法的返回值是创建这个对象的指针。也就是说，如果要创建类的对象，就必须要调">
+<meta name="keywords" content="objectC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="objectC继承和多态">
+<meta property="og:url" content="http://fanzheng.ink/2018/04/15/objectC/objectC继承和多态/index.html">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="继承1、 语法@interface 类名 : 父亲类的名称 @end2、 oc继承特点  单根性，一个类只能有一个父类，不能有多个父类 传递性，A类从B类继承，B类从C类继承，那么A类就同时拥有BC类的成员  NSObject 类1、 是Foundation框架中的类，在这个类中有一个类方法new 这个方法是用来创建对象的，方法的返回值是创建这个对象的指针。也就是说，如果要创建类的对象，就必须要调">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-09T11:24:10.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="objectC继承和多态">
+<meta name="twitter:description" content="继承1、 语法@interface 类名 : 父亲类的名称 @end2、 oc继承特点  单根性，一个类只能有一个父类，不能有多个父类 传递性，A类从B类继承，B类从C类继承，那么A类就同时拥有BC类的成员  NSObject 类1、 是Foundation框架中的类，在这个类中有一个类方法new 这个方法是用来创建对象的，方法的返回值是创建这个对象的指针。也就是说，如果要创建类的对象，就必须要调">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fanzheng.ink/2018/04/15/objectC/objectC继承和多态/">
+
+
+
+
+
+  <title>objectC继承和多态 | 水滴石穿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水滴石穿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fanzheng.ink/2018/04/15/objectC/objectC继承和多态/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fangzheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/psb.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水滴石穿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">objectC继承和多态</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T13:20:33+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objectC语言学习/" itemprop="url" rel="index">
+                    <span itemprop="name">objectC语言学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>1、 语法<br>@interface 类名 : 父亲类的名称</p>
+<p>@end<br>2、 oc继承特点</p>
+<ul>
+<li>单根性，一个类只能有一个父类，不能有多个父类</li>
+<li>传递性，A类从B类继承，B类从C类继承，那么A类就同时拥有BC类的成员</li>
+</ul>
+<h2 id="NSObject-类"><a href="#NSObject-类" class="headerlink" title="NSObject 类"></a>NSObject 类</h2><p>1、 是Foundation框架中的类，在这个类中有一个类方法new 这个方法是用来创建对象的，方法的返回值是创建这个对象的指针。也就是说，如果要创建类的对象，就必须要调用这个new方法。如果想要我们的类具备创建对象的能力，就必须让我们的类直接或者间接的从NSObject类继承。</p>
+<h2 id="super"><a href="#super" class="headerlink" title="super"></a>super</h2><p>1、 可以用在类方法和对象方法之中<br>2、 在对象方法中可以使用super关键字调用当前对象从父类继承过来的对象方法<br>3、 在类方法中 super关键字可以调用当前类从父类继承过来的类方法<br>4、 super只能用来调用父类的对象方法或者类方法，不能用来访问属性<br>5、 super特指这个方法是从父类继承过来的</p>
+<h2 id="访问修饰符"><a href="#访问修饰符" class="headerlink" title="访问修饰符"></a>访问修饰符</h2><p>1、 用来修饰属性的，可以限定对象的属性在那个阶段范围之中访问</p>
+<ul>
+<li>@private 私有属性只能在本类的内部访问</li>
+<li>@protected 受保护的属性，被protected修饰的属性，只能在本类和本类的子类中访问</li>
+<li>@package 被@package修饰的属性 可以在当前框架中访问</li>
+<li>@public 公共的，被@public修饰的属性，可以在任意的地方访问</li>
+</ul>
+<p>2、 如果部位属性指定访问修饰符， 那么默认的就是@protected</p>
+<p>3、 子类仍然可以继承父类私有属性，只不过在子类当中无法去直接访问从父类继承过来的私有属性。但是如果父类在有个对象方法来直接操作私有属性，子类可以调用此访问来间接操作此属性</p>
+<p>4、 访问修饰符的作用域问题，从写访问修饰符的地方开始往下，直到遇到另外一个访问修饰符或者结束大括弧为止，中间的所有属性都应用这个访问修饰符</p>
+<p>5、 使用建议</p>
+<ul>
+<li>@public无论什么情况下都不要使用，属性不要直接暴露给外界</li>
+<li>@private 如果希望此属性只在本类中使用，不想在子类中使用，就使用它</li>
+<li>@protected 如果希望此属性只在本类和子类中使用，就使用它，默认就是它</li>
+</ul>
+<p>6、 访问修饰符只能用来修饰属性，不能用来修饰方法</p>
+<p>7、 如果属性定义在@interface中并标记为@private修饰，Xcode仍然会提示对象中有这个属性，只不过没有权利访问。如果想要实现真私有，在@implementation后面的大括弧中，写下此属性即可。这个里面的属性是一个私有属性，各种访问修饰符无效，外界也不会提示。</p>
+<p>8、 私有方法，方法不写声明，只写实现，那么这个方法就是一个私有方法，只能在本类的其他方法中调用，其他外部调用不了</p>
+<h2 id="里氏替换原则-lsp"><a href="#里氏替换原则-lsp" class="headerlink" title="里氏替换原则 lsp"></a>里氏替换原则 lsp</h2><p>1、子类可以替换父类的位置，并且程序的功能不受影响<br>2、当一个父类指针指向一个子类对象的时候，这里就有里氏替换原则<br>3、lsp的作用</p>
+<ul>
+<li>一个指针中不仅可以存储本类对象的地址还可以存储子类对象的地址</li>
+<li>如果一个指针的类型是NSObject类型的，那么这个指针中可以存储任意的oc对象的地址</li>
+<li>如果一个数组的元素的类型是一个oc指针类型的，那么这个数组中不仅可以存储本类对象还可以储存子类对象</li>
+<li>如果一个数组的元素是NSObject指针类型，那么意味着任意oc对象都可以存储到这个数组中</li>
+<li><p>如果一个方法的参数是一个对象，那么为这个参数传值的时候，一个传递一个本类对象，也可以传递子类对象，对方法中的代码不会有丝毫的影响</p>
+<p>4、 当一个父类指针指向一个子类对象的时候，通过这个父类指针只能去调用子类对象中的父类成员，子类独有的成员无法访问</p>
+<h2 id="方法的重写"><a href="#方法的重写" class="headerlink" title="方法的重写"></a>方法的重写</h2><p>1、 拥有父类的行为，但是行为的具体实现和父类的实现不一样。那么子类就按照自己的方式重写这个方法就可以了<br>2、 当一个父类指针指向一个子类对象的时候，通过这个父类指针调用的方法，如果子类对象中重写了，调用的就是这个子类对象重写的方法</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>1、指的是同一个行为，对于不同的事物具有不同的表现形式。比如打招呼，中国人打招呼和美国人不同和韩国人也不同。</p>
+<h2 id="description"><a href="#description" class="headerlink" title="description"></a>description</h2><p>1、 %p 打印的是指针变量的值<br>2、 %@ 打印的是指针变量指向的对象<br>3、 如果使用%@打印1个对象 输出的格式： &lt;对象的类名 ：对象的地址&gt;，原理：第一步调用传入对象的description方法，第二步拿到这个方法的返回值，这个返回值是一个字符串，将这个字符串输出<br>4、 description方法是定义在NSObject类之中的。什么时候需要重写description方法，如果希望使用%@打印一个自定义格式的输出，重写即可</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/objectC/" rel="tag"># objectC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/objectC/objectC类/" rel="next" title="objectC类">
+                <i class="fa fa-chevron-left"></i> objectC类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/15/objectC/objectC面向对象/" rel="prev" title="objectC面向对象">
+                objectC面向对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/psb.jpg" alt="fangzheng">
+            
+              <p class="site-author-name" itemprop="name">fangzheng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">1.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSObject-类"><span class="nav-number">2.</span> <span class="nav-text">NSObject 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#super"><span class="nav-number">3.</span> <span class="nav-text">super</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问修饰符"><span class="nav-number">4.</span> <span class="nav-text">访问修饰符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#里氏替换原则-lsp"><span class="nav-number">5.</span> <span class="nav-text">里氏替换原则 lsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法的重写"><span class="nav-number">6.</span> <span class="nav-text">方法的重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态"><span class="nav-number">7.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#description"><span class="nav-number">8.</span> <span class="nav-text">description</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fangzheng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+<script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500675900");
+
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+</script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

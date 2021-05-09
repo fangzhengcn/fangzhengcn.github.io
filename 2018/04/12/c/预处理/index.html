@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="预处理,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="特点1、 都是以 #开头2、 预处理都是在编译之前执行3、 预处理指令都没有分号 c语言从编写到编译、链接、执行流程1、 新建一个.c的源文件，.c的文件是c程序的源文件2、 在.c的源文件中，可以写上按照c语法规范的源代码3、 c语言严格区分大小写，除了字符串常量，其他地方必须使用英文输入法4、 使用cc -c 指令去编译源文件，编译做的事情  先执行源文件中的预处理指令，如果有文件包含指令，就">
+<meta name="keywords" content="预处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="预处理">
+<meta property="og:url" content="http://fanzheng.ink/2018/04/12/c/预处理/index.html">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="特点1、 都是以 #开头2、 预处理都是在编译之前执行3、 预处理指令都没有分号 c语言从编写到编译、链接、执行流程1、 新建一个.c的源文件，.c的文件是c程序的源文件2、 在.c的源文件中，可以写上按照c语法规范的源代码3、 c语言严格区分大小写，除了字符串常量，其他地方必须使用英文输入法4、 使用cc -c 指令去编译源文件，编译做的事情  先执行源文件中的预处理指令，如果有文件包含指令，就">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-09T11:24:10.733Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="预处理">
+<meta name="twitter:description" content="特点1、 都是以 #开头2、 预处理都是在编译之前执行3、 预处理指令都没有分号 c语言从编写到编译、链接、执行流程1、 新建一个.c的源文件，.c的文件是c程序的源文件2、 在.c的源文件中，可以写上按照c语法规范的源代码3、 c语言严格区分大小写，除了字符串常量，其他地方必须使用英文输入法4、 使用cc -c 指令去编译源文件，编译做的事情  先执行源文件中的预处理指令，如果有文件包含指令，就">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fanzheng.ink/2018/04/12/c/预处理/">
+
+
+
+
+
+  <title>预处理 | 水滴石穿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水滴石穿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fanzheng.ink/2018/04/12/c/预处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fangzheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/psb.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水滴石穿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">预处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T13:20:33+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c语言学习/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>1、 都是以 #开头<br>2、 预处理都是在编译之前执行<br>3、 预处理指令都没有分号</p>
+<h2 id="c语言从编写到编译、链接、执行流程"><a href="#c语言从编写到编译、链接、执行流程" class="headerlink" title="c语言从编写到编译、链接、执行流程"></a>c语言从编写到编译、链接、执行流程</h2><p>1、 新建一个.c的源文件，.c的文件是c程序的源文件<br>2、 在.c的源文件中，可以写上按照c语法规范的源代码<br>3、 c语言严格区分大小写，除了字符串常量，其他地方必须使用英文输入法<br>4、 使用cc -c 指令去编译源文件，编译做的事情</p>
+<ul>
+<li>先执行源文件中的预处理指令，如果有文件包含指令，就将文件的内容拷贝到写指令的地方</li>
+<li>检查.c文件中的语法是否符合规范<ul>
+<li>如果符合，则生成.o目标文件，就是.c文件对应的二进制指令</li>
+<li>如果不符合语法规范，就报错，不会生成.o的目标文件</li>
+</ul>
+</li>
+</ul>
+<p>5、 链接 cc xx.o目标文件 </p>
+<ul>
+<li>为.o的目标文件添加启动代码</li>
+<li>链接函数，告诉编译器要调用的函数在什么地方，调用的时候，去正确的地方找实现</li>
+<li>链接成功以后，就会生成一个可执行的文件a.out</li>
+</ul>
+<h2 id="预处理指令的分类"><a href="#预处理指令的分类" class="headerlink" title="预处理指令的分类"></a>预处理指令的分类</h2><p>1、 文件包含指令 #include<br>2、 宏定义： 可以将1段代码定义为1个标识，使用这个标识就可以使用这段代码<br>3、 条件编译指令： 只编译指定的c代码为二进制指令</p>
+<h2 id="宏定义"><a href="#宏定义" class="headerlink" title="宏定义"></a>宏定义</h2><p>1、 是一个预处理指令，它在编译之前执行<br>2、 作用：可以为一段c代码定义一个标识，如果要使用这段c代码，那么使用这段标识就可以<br>3、 语法：#define 宏名 宏值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define N 10</span><br></pre></td></tr></table></figure></p>
+<p>4、 使用： 在c代码中，直接使用宏的名称就可以了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int a=N +1;</span><br></pre></td></tr></table></figure></p>
+<p>5、 宏的原理<br>在预编译的时候，就会执行源文件中的预处理指令，会将c代码中使用宏名的地方替换为宏值。将c代码中的宏名替换为宏值的过程叫做宏替换/宏代换</p>
+<p>6、 使用宏的时候，注意点</p>
+<ul>
+<li>宏值可以定义任意的内容，在宏替换的时候，会把宏值原封不动的替换掉。在定义宏的时候，不会检查语法</li>
+<li>无论宏值是什么，在定义宏的时候，不会去检查语法，只有当完成了宏替换的时候，才会去检查替换以后，是否符合语法规范</li>
+<li>如果宏值是一个表达式，那么宏值并不是这个表达式的结果，而是这个表达式本身</li>
+<li>如果宏值中包括一个变量名，那么在使用这个宏之前，要保证变量已经声明</li>
+<li>宏值无法赋值，不能修改值，因为宏不是变量</li>
+<li>宏的作用域，宏可以定义在函数的里面也可以定义在函数的外面。从定义宏的地方开始，后面所有的地方都可以直接使用。就算这个宏，定义在括弧里面，在大括弧的外面也可以访问</li>
+<li>字符串中如果出现了宏名，系统不会认为他是一个宏，不会替换</li>
+<li>宏值当中用到了另外一个宏名。那么就会先将宏值当中的宏名替换为对应的宏值</li>
+<li>如果宏值后面跟了一个分号，系统会把分号当作宏值的一部分，替换的时候会连分号一起替换</li>
+<li>可以把任意的c代码定义为宏</li>
+</ul>
+<h2 id="undef"><a href="#undef" class="headerlink" title="undef"></a>undef</h2><p>默认的情况下，宏从定义的地方一直到文件结束都可以使用，使用 #undef 宏名，可以让宏失效</p>
+<h2 id="define-和-typedef-的区别"><a href="#define-和-typedef-的区别" class="headerlink" title="#define 和 typedef 的区别"></a>#define 和 typedef 的区别</h2><p>1、 #define是一个预处理命令，在编译的时候执行，在预编译的时候会把宏名替换成宏值。typedef是一个c代码，在运行的时候才会执行<br>2、 #define 可以将任意的c代码取一个标识名，typedef只能为数据类型取名字</p>
+<h2 id="带参数的宏"><a href="#带参数的宏" class="headerlink" title="带参数的宏"></a>带参数的宏</h2><p>1、 在定义宏的时候，宏名可以带参数，在这个宏值当中，可以直接使用这个参数<br>2、 如果使用的宏有参数，就必须为此宏传值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#define N(a) a+a+1</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    int b=N(2);</span><br><span class="line">    printf(&quot;b=%d\n&quot;,b);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3、 宏代换的原理</p>
+<ul>
+<li>先将传入的值，传递给宏的参数，那么宏参数的值就是我们传递的值</li>
+<li>再把宏值当中使用参数的地方换成参数的值</li>
+<li>最后，再将使用宏名的地方，替换为最后的宏值</li>
+</ul>
+<p>4、 注意点</p>
+<ul>
+<li>宏不是函数，所以宏的参数不需要添加数据类型说明符，直接写参数即可</li>
+<li>定义宏的时候，编译器区分宏名和宏值是根据 #define 空格 宏名 空格 宏值，第一个空格和第二个空格之间的内容会作为宏名，第二个空格之后的内容会作为宏值，写宏的时候，要注意空格</li>
+<li>为带参数的宏传值的时候，是本色传递。如果传递一个变量，并不是传递这个变量的值，而是直接传递这个变量的名称串</li>
+<li>宏一定程度上，可以实现和函数一样的效果，但是宏有缺点宏一旦换行就会认为宏定义结束了</li>
+<li>只有当代码很少的时候，只有几句的时候，可以使用宏</li>
+</ul>
+<h2 id="条件编译指令"><a href="#条件编译指令" class="headerlink" title="条件编译指令"></a>条件编译指令</h2><p>1、是一个与编译指令，在预编译阶段执行<br>2、作用：</p>
+<ul>
+<li>默认情况下，所有的c代码都会被编译为二进制代码</li>
+<li>条件编译指令的作用：可以让编译器只编译指定的部分代码</li>
+</ul>
+<p>3、 用法：</p>
+<ul>
+<li><p>第一种用法,在预编译的时候，如果条件成立，则会将其中的c代码编译成二进制指令，如果不成立，则不会将c代码编译成二进制指令。注意：条件只能是宏，不能是变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#if 条件</span><br><span class="line">   c代码;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二种用法，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#if 条件</span><br><span class="line">    c代码;</span><br><span class="line">#elif 条件</span><br><span class="line">    c代码;</span><br><span class="line">#elif 条件</span><br><span class="line">    c代码;</span><br><span class="line">……</span><br><span class="line">#else</span><br><span class="line">    c代码；</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第三种用法,如果定义了指定的宏，就编译其中的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#ifdef N</span><br><span class="line">    printf(&quot;hello world1\n&quot;);</span><br><span class="line">    printf(&quot;hello world1\n&quot;);</span><br><span class="line">    printf(&quot;hello world1\n&quot;);</span><br><span class="line">    printf(&quot;hello world1\n&quot;);</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>4、 使用场景，比如打印日志调试的时候，如下</p>
+<ul>
+<li><p>场景1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#define FZ_DEBUG 0</span><br><span class="line">#if FZ_DEBUG==1</span><br><span class="line">#define LOG(val1,val2) printf(val1,val2);</span><br><span class="line">#else</span><br><span class="line">#define LOG(val1,val2)</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    </span><br><span class="line">    int a=19;</span><br><span class="line">    LOG(&quot;%d\n&quot;,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>场景2 在引用文件头文件的时候，无论头文件被#include了多少次，都只希望被包含一次</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#ifndef 宏名</span><br><span class="line"></span><br><span class="line">#define 宏名</span><br><span class="line">    代码;</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/预处理/" rel="tag"># 预处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/12/c/结构体/" rel="next" title="结构体">
+                <i class="fa fa-chevron-left"></i> 结构体
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/12/c/输入输出/" rel="prev" title="输入输出">
+                输入输出 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/psb.jpg" alt="fangzheng">
+            
+              <p class="site-author-name" itemprop="name">fangzheng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c语言从编写到编译、链接、执行流程"><span class="nav-number">2.</span> <span class="nav-text">c语言从编写到编译、链接、执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预处理指令的分类"><span class="nav-number">3.</span> <span class="nav-text">预处理指令的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宏定义"><span class="nav-number">4.</span> <span class="nav-text">宏定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undef"><span class="nav-number">5.</span> <span class="nav-text">undef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#define-和-typedef-的区别"><span class="nav-number">6.</span> <span class="nav-text">#define 和 typedef 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带参数的宏"><span class="nav-number">7.</span> <span class="nav-text">带参数的宏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件编译指令"><span class="nav-number">8.</span> <span class="nav-text">条件编译指令</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fangzheng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+<script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500675900");
+
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+</script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="objectC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、 oc相对于c  在c的基础之上新增了1小部分面向对象的语法 将c一些复杂的语法简化了很多  2、 oc程序的源文件后缀名为.m，m代表message 代表oc中最重要的1个机制 消息机制 c程序的源文件后缀名为.c 3、 main函数仍然是oc程序的入口和出口  int 类型的返回值 代表程序的结束状态 main函数的参数： 仍然可以接收用户在运行的时候传递数据给程序，参数也可以不要  4、">
+<meta name="keywords" content="objectC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="objectC基本语法">
+<meta property="og:url" content="http://fanzheng.ink/2018/04/15/objectC/objectC基本语法/index.html">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="1、 oc相对于c  在c的基础之上新增了1小部分面向对象的语法 将c一些复杂的语法简化了很多  2、 oc程序的源文件后缀名为.m，m代表message 代表oc中最重要的1个机制 消息机制 c程序的源文件后缀名为.c 3、 main函数仍然是oc程序的入口和出口  int 类型的返回值 代表程序的结束状态 main函数的参数： 仍然可以接收用户在运行的时候传递数据给程序，参数也可以不要  4、">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-09T11:24:10.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="objectC基本语法">
+<meta name="twitter:description" content="1、 oc相对于c  在c的基础之上新增了1小部分面向对象的语法 将c一些复杂的语法简化了很多  2、 oc程序的源文件后缀名为.m，m代表message 代表oc中最重要的1个机制 消息机制 c程序的源文件后缀名为.c 3、 main函数仍然是oc程序的入口和出口  int 类型的返回值 代表程序的结束状态 main函数的参数： 仍然可以接收用户在运行的时候传递数据给程序，参数也可以不要  4、">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fanzheng.ink/2018/04/15/objectC/objectC基本语法/">
+
+
+
+
+
+  <title>objectC基本语法 | 水滴石穿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水滴石穿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fanzheng.ink/2018/04/15/objectC/objectC基本语法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fangzheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/psb.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水滴石穿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">objectC基本语法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T13:20:33+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objectC语言学习/" itemprop="url" rel="index">
+                    <span itemprop="name">objectC语言学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1、 oc相对于c</p>
+<ul>
+<li>在c的基础之上新增了1小部分面向对象的语法</li>
+<li>将c一些复杂的语法简化了很多</li>
+</ul>
+<p>2、 oc程序的源文件后缀名为.m，m代表message 代表oc中最重要的1个机制 消息机制 c程序的源文件后缀名为.c</p>
+<p>3、 main函数仍然是oc程序的入口和出口</p>
+<ul>
+<li>int 类型的返回值 代表程序的结束状态</li>
+<li>main函数的参数： 仍然可以接收用户在运行的时候传递数据给程序，参数也可以不要</li>
+</ul>
+<p>4、 #import 指令</p>
+<ul>
+<li>以#号开头，是一个预处理指令</li>
+<li>作用：是#include指令的增强版，将文件的内容在预编译的时候拷贝到写指令的地方</li>
+<li><p>增强： 同一个文件无论#import多少次，只会包含1次。在c语言中，如果使用#include命令实现这个功能，需要使用条件预编译指令来实现。</p>
+</li>
+<li><p>原理： #import指令在包含文件的时候，底层会先判断这个文件是否被包含，如果被包含就会略过，否则才会包含</p>
+</li>
+</ul>
+<h2 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h2><p>1、 是一个功能集，苹果或者第三方事先将一些程序在开发程序的时候经常要用到的功能先写好，把这些功能封装在1个类或者函数之中，这些函数和类的集合就叫做框架，有点像c语言的函数库</p>
+<p>2、 Foundation框架</p>
+<ul>
+<li>名字释义： 基础，基本，这个框架提供一些基本的功能，输入输出，一些数据类型</li>
+<li><p>Foundation路径： Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Versions/C/Headers/Foundation.h</p>
+</li>
+<li><p>Foundation.h这个头文件中包含了Foundation框架中的其他所有头文件，所以只要包含Foundation.h就相当于包含了Foundation框架的所有头文件。那么Foundation框架中的所有函数和类都可以直接使用了</p>
+</li>
+<li><p>#import &lt;Foundation/Foundation.h&gt; 包含Foundation框架头</p>
+</li>
+<li><p>@autoreleasepool是自动释放池，可以将代码写在自动释放池，或者直接删除也不会有影响</p>
+</li>
+</ul>
+<p>3、 NSLog函数</p>
+<ul>
+<li>作用： 是printf函数的增强版，向控制台输出信息</li>
+<li>语法： NSlog(@”格式控制字符串”,变量列表);</li>
+<li>增强的地方 <ul>
+<li>输出一些调试相关的信息，执行这段代码的时间，程序的名字,进程编号，线程编号，最后是输出的信息</li>
+<li>会自动换行，在输出完信息之后，会自动换行</li>
+<li>OC中新增了一些数据类型，NSLog函数不仅可以输出c语言数据类型变量的值，也可以输出OC新增类型变量的值</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>2018-01-14 19:00:42.935906+0800 ObjectCDemo[36595:1039524]<br>Hello, World!</p>
+</blockquote>
+<ul>
+<li><p>用法：和printf函数差不多，前面有个@符号，占位符用法一样</p>
+</li>
+<li><p>使用注意： </p>
+<ul>
+<li>第一个参数前面必须要加一个@符号</li>
+<li>在字符串末尾如果手动加了一个<code>\n</code>代表换行，那么函数自带的自动换行就会失效</li>
+</ul>
+</li>
+</ul>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>1、 c语言中字符串的存储方式</p>
+<ul>
+<li>使用字符数组存储</li>
+<li>使用字符指针</li>
+</ul>
+<p>2、 OC中设计了一个更为好用的用来存储字符串的类型，NSString<br>NSString类型的指针变量，专门用来存储OC字符串的地址</p>
+<p>3、 OC的字符串必须要使用1个前缀@符号</p>
+<ul>
+<li>“jack” 这是一个c语言的字符串</li>
+<li>@”jack” 这是一个oc的字符串</li>
+<li>NSString类型的指针变量，只能存储OC字符串的地址</li>
+<li>NSString *str = @”jack”;</li>
+</ul>
+<p>4、 注意：</p>
+<ul>
+<li>NSLog函数的第一个参数是NSString类型，所以必须用@开头</li>
+<li>如果要使用NSLog函数输出字符串，占位符必须使用%@<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSString *name=@&quot;jack&quot;;</span><br><span class="line">NSLog(@&quot;Hello, %@!&quot;,name);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>5、 NS前缀的来历<br>NextStep 公司—&gt;Cocoa—&gt; Foundation 框架之中</p>
+<p>6、 @符号</p>
+<ul>
+<li>将c字符串转换为OC字符串</li>
+<li>OC中的绝大都数关键字都是以@符号开头</li>
+</ul>
+<p>7、 和C语言中的注释一模一样，分为单行和多行注释</p>
+<h2 id="函数的定义和调用"><a href="#函数的定义和调用" class="headerlink" title="函数的定义和调用"></a>函数的定义和调用</h2><p>1、 与C语言函数的定义和调用是一样的</p>
+<h2 id="OC与C语言的不同"><a href="#OC与C语言的不同" class="headerlink" title="OC与C语言的不同"></a>OC与C语言的不同</h2><p>1、 OC程序的编译、链接、执行</p>
+<ul>
+<li>在.m文件中写上符合OC语法的源代码</li>
+<li>使用cc -c main.c, 编译源代码生成目标文件.o文件</li>
+<li>链接 cc main.o文件 ，会报错</li>
+<li>如果程序中使用到了框架中的函数或者类，那么在链接的时候，必须告诉编译器去哪个框架中去找对应的函数或者类</li>
+<li>正确的链接应该为 cc main.o -framework Foundation</li>
+</ul>
+<p>2、 OC程序各个阶段后缀名对比</p>
+<table>
+<thead>
+<tr>
+<th>语言</th>
+<th>源文件</th>
+<th>目标文件</th>
+<th>可执行文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C</td>
+<td>.c</td>
+<td>.o</td>
+<td>.out</td>
+</tr>
+<tr>
+<td>OC</td>
+<td>.m</td>
+<td>.o</td>
+<td>.out</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>1、 OC中的数据类型，支持C语言中的所有数据类型</p>
+<ul>
+<li>基本数据类型 （int double float char）</li>
+<li>构造类型 (数组、结构体、枚举)</li>
+<li>指针类型 int* p1</li>
+<li>空类型 void</li>
+<li><p>typedef自定义类型</p>
+<p>2、 新增了一些数据类型</p>
+</li>
+</ul>
+<ul>
+<li>BOOL类型<ul>
+<li>可以存储YES或者NO中的任意一个数据</li>
+<li>一般情况下BOOL类型的变量用来存储条件表达式的结果，如果条件表达式成立，那么结果就是YES，如果条件表达式不成立，结果就是NO</li>
+<li>BOOL 的本质 typedef signed char BOOL,实际上BOOL类型的变量是一个有符号的char变量</li>
+<li>#define YES ((BOOL)1)  #define NO ((BOOL)0) YES实际上就是1 NO实际上就是0</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Boolean类型</p>
+<ul>
+<li>可以存储true或者false</li>
+<li>一般情况下BOOL类型的变量用来存储条件表达式的结果，如果条件表达式成立，那么结果就是true，如果条件表达式不成立，结果就是false</li>
+<li>Boolean的本质 typedef unsigned char Boolean,实际上Boolean类型的变量是一个无符号的char变量</li>
+<li>#define true 1  #define false 0 true实际上就是1 false实际上就是0</li>
+</ul>
+</li>
+<li><p>class类型</p>
+</li>
+<li>id类型 万能指针</li>
+<li>nil 与NULL差不多</li>
+<li>SEL 方法选择器</li>
+<li>block 代码段类型</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/objectC/" rel="tag"># objectC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/objectC/objectC内存管理ARC与分类/" rel="next" title="内存管理ARC与分类">
+                <i class="fa fa-chevron-left"></i> 内存管理ARC与分类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/01/english/Lesson1 Excute me/" rel="prev" title="英语学习第一课 Excuse me">
+                英语学习第一课 Excuse me <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/psb.jpg" alt="fangzheng">
+            
+              <p class="site-author-name" itemprop="name">fangzheng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#框架"><span class="nav-number">1.</span> <span class="nav-text">框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串"><span class="nav-number">2.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数的定义和调用"><span class="nav-number">3.</span> <span class="nav-text">函数的定义和调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OC与C语言的不同"><span class="nav-number">4.</span> <span class="nav-text">OC与C语言的不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">5.</span> <span class="nav-text">数据类型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fangzheng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+<script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500675900");
+
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+</script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

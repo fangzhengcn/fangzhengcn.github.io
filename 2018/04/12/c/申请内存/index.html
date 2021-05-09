@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="内存,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="malloc函数1、 如何向堆区中申请空间来使用  如果在堆中申请的字节空间，如果不去主动释放，那么系统也不会释放的，除非程序结束 在堆中申请字节空间的步骤 申请 使用 释放   有如下3个函数和申请字节空间有关的 malloc() calloc() realloc() 上面三个函数的声明，都是放在一个叫做stdlib.h的系统头文件中    malloc 函数1、 作用： 向堆空间申请指定字节的">
+<meta name="keywords" content="内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="申请内存">
+<meta property="og:url" content="http://fanzheng.ink/2018/04/12/c/申请内存/index.html">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="malloc函数1、 如何向堆区中申请空间来使用  如果在堆中申请的字节空间，如果不去主动释放，那么系统也不会释放的，除非程序结束 在堆中申请字节空间的步骤 申请 使用 释放   有如下3个函数和申请字节空间有关的 malloc() calloc() realloc() 上面三个函数的声明，都是放在一个叫做stdlib.h的系统头文件中    malloc 函数1、 作用： 向堆空间申请指定字节的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-09T11:24:10.733Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="申请内存">
+<meta name="twitter:description" content="malloc函数1、 如何向堆区中申请空间来使用  如果在堆中申请的字节空间，如果不去主动释放，那么系统也不会释放的，除非程序结束 在堆中申请字节空间的步骤 申请 使用 释放   有如下3个函数和申请字节空间有关的 malloc() calloc() realloc() 上面三个函数的声明，都是放在一个叫做stdlib.h的系统头文件中    malloc 函数1、 作用： 向堆空间申请指定字节的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fanzheng.ink/2018/04/12/c/申请内存/">
+
+
+
+
+
+  <title>申请内存 | 水滴石穿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水滴石穿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fanzheng.ink/2018/04/12/c/申请内存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fangzheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/psb.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水滴石穿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">申请内存</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T12:11:33+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c语言学习/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="malloc函数"><a href="#malloc函数" class="headerlink" title="malloc函数"></a>malloc函数</h2><p>1、 如何向堆区中申请空间来使用</p>
+<ul>
+<li>如果在堆中申请的字节空间，如果不去主动释放，那么系统也不会释放的，除非程序结束</li>
+<li>在堆中申请字节空间的步骤<ul>
+<li>申请</li>
+<li>使用</li>
+<li>释放</li>
+</ul>
+</li>
+<li>有如下3个函数和申请字节空间有关的<ul>
+<li>malloc()</li>
+<li>calloc()</li>
+<li>realloc()</li>
+<li>上面三个函数的声明，都是放在一个叫做stdlib.h的系统头文件中</li>
+</ul>
+</li>
+</ul>
+<h2 id="malloc-函数"><a href="#malloc-函数" class="headerlink" title="malloc 函数"></a>malloc 函数</h2><p>1、 作用： 向堆空间申请指定字节的空间来使用<br>2、 参数只有1个：size_t类型的，也就是unsigned long，意义：向堆内存中申请多少个连续的字节空间<br>3、 在堆内存中申请连续的参数个字节空间<br>4、 返回值是： void * ，代表没有类型的指针。返回的是创建的空间中的第一个字节的地址<br>5、 应该使用什么类型的指针变量来保存malloc函数返回的地址，取决于想要如何去操作这些字节空间</p>
+<pre><code>* 如果想要操作4个字节，并当作整型则使用int指针
+* 如果想要操作8个字节，使用double指针
+* 如果想要操作1个字节，使用char指针
+* 如果想要操作4个字节， 并当作float类型则使用float指针
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 申请长度为6的int类型数组空间</span><br><span class="line">int* p1 = malloc(24);</span><br><span class="line">*p1 = 100;</span><br><span class="line">*(p1+1)=200;</span><br><span class="line">*(p1+2)=300;</span><br><span class="line">*(p1+3)=400;</span><br><span class="line">*(p1+4)=500;</span><br><span class="line">*(p1+5)=600;</span><br><span class="line"></span><br><span class="line">for(int i=0;i&lt;6;i++)&#123;</span><br><span class="line">    printf(&quot;%d\n&quot;,p1[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>6、 在堆区申请的字节空间，是从低地址向高地址分配的。每次申请的字节地址都是从0开始，每一次申请的字节空间不一定是挨在一起。但是每一次申请指定个字节一定是连续的。</p>
+<p>7、 在堆区申请的字节，里面是有值，但是值是垃圾值，不会自动清零</p>
+<p>8、 在向堆区申请字节空间的时候，有可能申请失败。如果申请失败，返回的指针就是null值。申请完空间之后，最好是判断下，判断是否申请成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int* p1 = malloc(4);</span><br><span class="line">if(p1) </span><br><span class="line">&#123;</span><br><span class="line">    // 代表申请成功，todo</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>9、 申请的空间使用完毕之后，一定要记住释放</p>
+<ul>
+<li>free(指针)；如果没有free，程序要结束后才会被释放</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int* p1 = malloc(120);</span><br><span class="line">if(p1)&#123;</span><br><span class="line">    for(int i=0;i&lt;30;i++)&#123;</span><br><span class="line">        *(p1+i)=i*10;</span><br><span class="line">    &#125;</span><br><span class="line">    for(int i=0;i&lt;30;i++)&#123;</span><br><span class="line">        printf(&quot;%d\n&quot;,p1[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    free(p1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="calloc-函数"><a href="#calloc-函数" class="headerlink" title="calloc 函数"></a>calloc 函数</h2><p>1、 作用：向堆区申请字节空间<br>2、 格式：</p>
+<ul>
+<li>calloc(多少个单位，每个单位的字节数)<br>如： calloc（4，sizeof(int);表示申请4个int类型的空间</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int* p1=calloc(30,sizeof(int));</span><br><span class="line">if(p1)&#123;</span><br><span class="line">    for(int i=0;i&lt;30;i++)&#123;</span><br><span class="line">        printf(&quot;%d\n&quot;,p1[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3、 申请完的字节，系统会将字节中的数据清零</p>
+<h2 id="realloc-函数"><a href="#realloc-函数" class="headerlink" title="realloc 函数"></a>realloc 函数</h2><p>1、 作用： 扩容<br>2、 注意： 有了指针，几乎就可以操作内存上面的每一个字节。建议只操作自己申请的内存空间，用了未申请的空间，有可能会出现问题。<br>3、 当发现之前在堆区申请的字节空间不够用的时候，可以使用realloc来扩容<br>4、 如果原来的空间后面还有剩余的空间，并且足够扩容，那么直接在后面扩容<br>5、 如果原来的空间后面还有剩余的空间，但是不够扩容，就重新找一块足够的空间来扩容。将原来的数据拷贝过来，原来的空间自动释放。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/内存/" rel="tag"># 内存</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/12/c/指针/" rel="next" title="指针">
+                <i class="fa fa-chevron-left"></i> 指针
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/12/c/指针与函数/" rel="prev" title="指针与函数">
+                指针与函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/psb.jpg" alt="fangzheng">
+            
+              <p class="site-author-name" itemprop="name">fangzheng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#malloc函数"><span class="nav-number">1.</span> <span class="nav-text">malloc函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#malloc-函数"><span class="nav-number">2.</span> <span class="nav-text">malloc 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#calloc-函数"><span class="nav-number">3.</span> <span class="nav-text">calloc 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#realloc-函数"><span class="nav-number">4.</span> <span class="nav-text">realloc 函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fangzheng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+<script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500675900");
+
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+</script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
